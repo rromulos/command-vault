@@ -5,10 +5,11 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/rromulos/command-vault"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/rromulos/command-vault"
 )
 
 const (
@@ -33,9 +34,9 @@ func main() {
 	case *add:
 		cmd, err := getInput(os.Stdin, flag.Args()...)
 		args := strings.Split(cmd, ",")
-		if args < 3 {
+		if len(args) < 3 {
 			fmt.Println("Error: missing arguments")
-			os.Exit(1)			
+			os.Exit(1)
 		}
 		commands.Add(args[0], args[1], args[2])
 		err = commands.Save(cmdFile)
