@@ -19,6 +19,7 @@ const (
 func main() {
 	add := flag.Bool("add", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
+	list := flag.Bool("l", false, "list all commands")
 	flag.Parse()
 
 	// Initializing the struct
@@ -34,6 +35,7 @@ func main() {
 	case *add:
 		cmd, err := getInput(os.Stdin, flag.Args()...)
 		args := strings.Split(cmd, ",")
+
 		if len(args) < 3 {
 			fmt.Println("Error: missing arguments")
 			os.Exit(1)
@@ -55,6 +57,8 @@ func main() {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
 		}
+	case *list:
+		commands.Print()
 	default:
 		fmt.Println(os.Stdout, "invalid command")
 		os.Exit(1)

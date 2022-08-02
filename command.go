@@ -3,6 +3,8 @@ package command
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+
 	// "fmt"
 	"io/ioutil"
 	"os"
@@ -11,25 +13,25 @@ import (
 
 type command struct {
 	Instruction string
-	Category string
+	Category    string
 	Description string
-	CreatedAt time.Time
+	CreatedAt   time.Time
 }
 
 type Commands []command
 
-func (c *Commands) Add(instruction string, category string, description string) { 
-	cmd := command {
+func (c *Commands) Add(instruction string, category string, description string) {
+	cmd := command{
 		Instruction: instruction,
-		Category: category,
+		Category:    category,
 		Description: description,
-		CreatedAt: time.Now(),
+		CreatedAt:   time.Now(),
 	}
 
 	*c = append(*c, cmd)
 }
 
-func (c* Commands) Delete(index int) error {
+func (c *Commands) Delete(index int) error {
 	ls := *c
 	if index <= 0 || index > len(ls) {
 		return errors.New("invalid index")
@@ -65,10 +67,17 @@ func (c *Commands) Load(filename string) error {
 
 func (c *Commands) Save(filename string) error {
 	data, err := json.Marshal(c)
-	
+
 	if err != nil {
 		return err
 	}
 
 	return ioutil.WriteFile(filename, data, 0644)
+}
+
+func (c *Commands) Print() {
+	for i, item := range *c {
+		i++
+		fmt.Printf("%d - %s\n", i, item.Instruction)
+	}
 }
