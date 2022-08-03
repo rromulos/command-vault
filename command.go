@@ -9,6 +9,8 @@ import (
 	"io/ioutil"
 	"os"
 	"time"
+
+	"github.com/alexeyco/simpletable"
 )
 
 type command struct {
@@ -76,8 +78,42 @@ func (c *Commands) Save(filename string) error {
 }
 
 func (c *Commands) Print() {
-	for i, item := range *c {
-		i++
-		fmt.Printf("%d - %s\n", i, item.Instruction)
+	table := simpletable.New()
+
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "Command"},
+			{Align: simpletable.AlignCenter, Text: "Category"},
+			{Align: simpletable.AlignCenter, Text: "Description"},
+			{Align: simpletable.AlignRight, Text: "CreatedAt"},
+		},
 	}
+
+	var cells [][]*simpletable.Cell
+
+	for idx, item := range *c {
+		idx++
+		instruction := cyan(item.Instruction)
+		category := magenta(item.Category)
+		description := yellow(item.Description)
+		createdAt := green(item.CreatedAt.Format(time.RFC822))
+		cells = append(cells, *&[]*simpletable.Cell{
+			{Text: fmt.Sprintf("%d", idx)},
+			{Text: instruction},
+			{Text: category},
+			{Text: description},
+			{Text: createdAt},
+		})
+	}
+
+	table.Body = &simpletable.Body{Cells: cells}
+
+	/*table.Footer = &simpletable.Footer{Cells: []*simpletable.Cell{
+		{Align: simpletable.AlignCenter, Span: 5, Text: fmt.Sprintf("You have %d pending todos")},
+	}}*/
+
+	table.SetStyle(simpletable.StyleUnicode)
+
+	table.Println()
 }
