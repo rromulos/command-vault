@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	cmdFile = ".commands.json"
+	cmdFile = "data/commands.json"
 )
 
 func main() {
