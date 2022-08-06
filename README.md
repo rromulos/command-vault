@@ -34,3 +34,4 @@ Is a small CLI application whose main purpose is to allow the user to save comma
 
 - Add the ability for the user to choose the characters to split the arguments
 - Add the ability for the user to search by commands and categories
+
