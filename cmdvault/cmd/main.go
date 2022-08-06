@@ -35,7 +35,7 @@ func main() {
 	case *add:
 		cmd, err := getInput(os.Stdin, flag.Args()...)
 		cmd = strings.TrimPrefix(cmd, "=")
-		args := strings.Split(cmd, ",")
+		args := strings.Split(cmd, "|-|")
 		if len(args) < 3 {
 			fmt.Println("Error: missing arguments")
 			os.Exit(1)
