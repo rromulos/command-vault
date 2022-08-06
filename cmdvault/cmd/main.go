@@ -17,7 +17,7 @@ const (
 )
 
 func main() {
-	add := flag.Bool("add", false, "add a new command")
+	add := flag.Bool("a", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
 	list := flag.Bool("l", false, "list all commands")
 	flag.Parse()
@@ -34,8 +34,8 @@ func main() {
 	switch {
 	case *add:
 		cmd, err := getInput(os.Stdin, flag.Args()...)
+		cmd = strings.TrimPrefix(cmd, "=")
 		args := strings.Split(cmd, ",")
-
 		if len(args) < 3 {
 			fmt.Println("Error: missing arguments")
 			os.Exit(1)
