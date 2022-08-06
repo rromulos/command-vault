@@ -1,5 +1,5 @@
 cv/a:
-	@go run ./cmdvault/cmd -a =$(args)
+	@go run ./cmdvault/cmd -a ='$(args)'
 cv/l:
 	@go run ./cmdvault/cmd -l
 cv/d:
