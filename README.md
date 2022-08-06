@@ -6,6 +6,8 @@ Is a small CLI application whose main purpose is to allow the user to save comma
 ### Adding a new command to the list
 
 - make cv/a args="cp -r dir_to_copy/ new_copy_dir/|-|Linux|-|copy entire directories"
+OR
+- ./main -a args="cp -r dir_to_copy/ new_copy_dir/|-|Linux|-|copy entire directories"
 
 **Note 1**: 3 parameters are needed
 
@@ -20,10 +22,14 @@ Is a small CLI application whose main purpose is to allow the user to save comma
 ### Listing all commands
 
 - make cv/l
+OR
+- ./main -l
 
 ### Removing a command
 
 - make cv/d id=1
+OR
+- ./main -d=1
 
 **Note**: *The ID shown in the table must be used as an index for removing the command*
 
