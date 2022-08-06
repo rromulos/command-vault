@@ -46,4 +46,5 @@ OR
 
 - Add the ability for the user to choose the characters to split the arguments
 - Add the ability for the user to search by commands and categories
+- Add the ability to copy a command to the clipboard
 
