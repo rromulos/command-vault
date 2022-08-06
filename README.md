@@ -1,3 +1,5 @@
+# Command Vault
+Is a small CLI application whose main purpose is to allow the user to save commands in a list.
 
 ## How to use
 
