@@ -9,7 +9,7 @@ Is a small CLI application whose main purpose is to allow the user to save comma
 
 OR
 
-- ./main -a args="cp -r dir_to_copy/ new_copy_dir/|-|Linux|-|copy entire directories"
+- ./main -a ="cp -r dir_to_copy/ new_copy_dir/|-|Linux|-|copy entire directories"
 
 **Note 1**: 3 parameters are needed
 
