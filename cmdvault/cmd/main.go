@@ -20,15 +20,13 @@ func main() {
 	add := flag.Bool("a", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
 	list := flag.Bool("l", false, "list all commands")
-	searchCommand := flag.Bool("scmd", false, "search for a command")
+	searchCommand := flag.Bool("scom", false, "search for a command")
 	searchCategory := flag.Bool("scat", false, "search for category")
 	searchDescription := flag.Bool("sdes", false, "search for Description")
 	flag.Parse()
 
-	// Initializing the struct
 	commands := &command.Commands{}
 
-	// tries to load the file that contains the commands
 	if err := commands.Load(cmdFile); err != nil {
 		fmt.Println(os.Stderr, err.Error())
 		os.Exit(1)

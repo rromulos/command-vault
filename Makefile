@@ -4,8 +4,8 @@ cv/l:
 	@./main -l
 cv/d:
 	@./main -d=$(id)
-cv/scmd:
-	@./main -scmd ='$(args)'
+cv/scom:
+	@./main -scom ='$(args)'
 cv/scat:
 	@./main -scat ='$(args)'
 cv/sdes:
