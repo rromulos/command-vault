@@ -13,6 +13,7 @@ Below you can check all the commands available so far.
 | ./cv -scom "value"      | Search by command |
 | ./cv -scat "value"     | Search by category |
 | ./cv -sdes "value"     | Search by description |
+| ./cv -v     | Shows the version |
 
 **Note**: You can search without enclosing the values in double quotes, but the value cannot represent a composite value.
 ## Screenshots
