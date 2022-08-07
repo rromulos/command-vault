@@ -6,8 +6,10 @@ import (
 	"fmt"
 
 	// "fmt"
+
 	"io/ioutil"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/alexeyco/simpletable"
@@ -15,6 +17,7 @@ import (
 )
 
 type command struct {
+	Id          string
 	Instruction string
 	Category    string
 	Description string
@@ -23,8 +26,9 @@ type command struct {
 
 type Commands []command
 
-func (c *Commands) Add(instruction string, category string, description string) {
+func (c *Commands) Add(id string, instruction string, category string, description string) {
 	cmd := command{
+		Id:          id,
 		Instruction: instruction,
 		Category:    category,
 		Description: description,
@@ -78,12 +82,26 @@ func (c *Commands) Save(filename string) error {
 	return ioutil.WriteFile(filename, data, 0644)
 }
 
+func (c *Commands) GenerateSequence() string {
+	content, err := ioutil.ReadFile("data/sequence.dat")
+	if err != nil {
+		err = ioutil.WriteFile("data/sequence.dat", []byte("0"), 0644)
+	}
+	sequence, err := strconv.ParseInt(string(content[:]), 10, 64)
+	sequence++
+	sequenceString := strconv.FormatInt(sequence, 10)
+
+	err = ioutil.WriteFile("data/sequence.dat", []byte(sequenceString), 0644)
+
+	return sequenceString
+}
+
 func (c *Commands) Print() {
 	table := simpletable.New()
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "ID"},
 			{Align: simpletable.AlignCenter, Text: "Command"},
 			{Align: simpletable.AlignCenter, Text: "Category"},
 			{Align: simpletable.AlignCenter, Text: "Description"},
@@ -94,12 +112,14 @@ func (c *Commands) Print() {
 
 	for idx, item := range *c {
 		idx++
+		id := gray(item.Id)
 		instruction := cyan(item.Instruction)
 		category := magenta(item.Category)
 		description := yellow(item.Description)
 
 		cells = append(cells, *&[]*simpletable.Cell{
-			{Text: fmt.Sprintf("%d", idx)},
+			// {Text: fmt.Sprintf("%d", idx)},
+			{Text: id},
 			{Text: instruction},
 			{Text: category},
 			{Text: description},
@@ -113,19 +133,29 @@ func (c *Commands) Print() {
 	table.Println()
 }
 
+func (c *Commands) FindIdPosition(id int) int {
+	for idx, item := range *c {
+		idx++
+		if strconv.Itoa(id) == item.Id {
+			return idx
+		}
+	}
+	return -1
+}
+
 func (c *Commands) Search(kind string, value string) {
 
-	jq := gojsonq.New().File("data/commands.json").Select("Instruction", "Category", "Description", "CreatedAt").Where(kind, "contains", value)
+	jq := gojsonq.New().File("data/commands.json").Select("Id", "Instruction", "Category", "Description", "CreatedAt").Where(kind, "contains", value)
 
 	table := simpletable.New()
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "Id"},
 			{Align: simpletable.AlignCenter, Text: "Command"},
 			{Align: simpletable.AlignCenter, Text: "Category"},
 			{Align: simpletable.AlignCenter, Text: "Description"},
-			{Align: simpletable.AlignRight, Text: "CreatedAt"},
+			// {Align: simpletable.AlignRight, Text: "CreatedAt"},
 		},
 	}
 
@@ -136,16 +166,18 @@ func (c *Commands) Search(kind string, value string) {
 			item := e.(map[string]interface{})
 
 			i++
+			id := gray(fmt.Sprintf("%v", item["Id"]))
 			instruction := cyan(fmt.Sprintf("%v", item["Instruction"]))
 			category := magenta(fmt.Sprintf("%v", item["Category"]))
 			description := yellow(fmt.Sprintf("%v", item["Description"]))
-			createdAt := green(fmt.Sprintf("%v", item["CreatedAt"]))
+			// createdAt := green(fmt.Sprintf("%v", item["CreatedAt"]))
 			cells = append(cells, *&[]*simpletable.Cell{
-				{Text: fmt.Sprintf("%d", i)},
+				// {Text: fmt.Sprintf("%d", i)},
+				{Text: id},
 				{Text: instruction},
 				{Text: category},
 				{Text: description},
-				{Text: createdAt},
+				// {Text: createdAt},
 			})
 		}
 		table.Body = &simpletable.Body{Cells: cells}
