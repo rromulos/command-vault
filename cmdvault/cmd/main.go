@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/rromulos/command-vault"
@@ -14,6 +16,18 @@ import (
 
 const (
 	cmdFile = "data/commands.json"
+)
+
+const (
+	sequenceIdFile = "data/sequence.dat"
+)
+
+const (
+	red     = "\033[0;91m%s\033[0m"
+	cyan    = "\033[0;96m%s\033[0m"
+	magenta = "\033[0;95m%s\033[0m"
+	yellow  = "\033[0;93m%s\033[0m"
+	green   = "\033[1;92m%s\033[0m"
 )
 
 func main() {
@@ -34,16 +48,23 @@ func main() {
 
 	switch {
 	case *add:
+		cleanTerminal()
 		readInstructionFromTerminal(commands)
 	case *del > 0:
 		deleteInstruction(commands, *del)
+		cleanTerminal()
+		commands.Print()
 	case *list:
+		cleanTerminal()
 		commands.Print()
 	case *searchCommand:
+		cleanTerminal()
 		doSearch("Instruction")
 	case *searchCategory:
+		cleanTerminal()
 		doSearch("Category")
 	case *searchDescription:
+		cleanTerminal()
 		doSearch("Description")
 	default:
 		fmt.Println(os.Stdout, "invalid command")
@@ -88,26 +109,39 @@ func doSearch(searchBy string) {
 
 func readInstructionFromTerminal(cmd *command.Commands) {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("[Enter the command] => ")
+	fmt.Printf(cyan, "[Enter the command]* => ")
 	scanner.Scan()
 	iInstruction := scanner.Text()
-	fmt.Print("[Enter the category] => ")
+	fmt.Printf(magenta, "[Enter the category]* => ")
 	scanner.Scan()
 	iCategory := scanner.Text()
-	fmt.Print("[Enter the description] => ")
+	fmt.Printf(yellow, "[Enter the description]* => ")
 	scanner.Scan()
 	iDescription := scanner.Text()
-	cmd.Add(iInstruction, iCategory, iDescription)
-	err := cmd.Save(cmdFile)
+	validatioResult := doValidation(iInstruction, iCategory, iDescription)
 
-	if err != nil {
-		fmt.Println(os.Stderr, err.Error())
-		os.Exit(1)
+	idSequence := cmd.GenerateSequence()
+
+	if validatioResult == true {
+		cmd.Add(idSequence, iInstruction, iCategory, iDescription)
+		err := cmd.Save(cmdFile)
+
+		if err != nil {
+			fmt.Println(os.Stderr, err.Error())
+			os.Exit(1)
+		}
 	}
 }
 
 func deleteInstruction(cmd *command.Commands, del int) {
-	err := cmd.Delete(del)
+	idPosition := cmd.FindIdPosition(del)
+
+	if idPosition == -1 {
+		fmt.Println("ID not found")
+		os.Exit(1)
+	}
+
+	err := cmd.Delete(idPosition)
 
 	if err != nil {
 		fmt.Println(os.Stderr, err.Error())
@@ -120,4 +154,43 @@ func deleteInstruction(cmd *command.Commands, del int) {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
+}
+
+func doValidation(instruction string, category string, description string) bool {
+
+	if len(instruction) == 0 {
+		fmt.Println("[Validation Failed] => type the COMMAND")
+		return false
+	}
+
+	if len(category) == 0 {
+		fmt.Println("[Validation Failed] => type the CATEGORY")
+		return false
+	}
+
+	if len(description) == 0 {
+		fmt.Println("[Validation Failed] => type the DESCRIPTION")
+		return false
+	}
+
+	return true
+}
+
+func cleanTerminal() {
+	switch runtime.GOOS {
+	case "darwin":
+		runCmd("clear")
+	case "linux":
+		runCmd("clear")
+	case "windows":
+		runCmd("cmd", "/c", "cls")
+	default:
+		runCmd("clear")
+	}
+}
+
+func runCmd(name string, arg ...string) {
+	cmd := exec.Command(name, arg...)
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
