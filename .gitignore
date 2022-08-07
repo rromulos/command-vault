@@ -1,5 +1,4 @@
 .commands.json
 .vscode/*
-!data
-data/commands.json
-data/sequence.dat
+/data/**
+!**/.gitkeep
