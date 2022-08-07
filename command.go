@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/alexeyco/simpletable"
+	"github.com/thedevsaddam/gojsonq/v2"
 )
 
 type command struct {
@@ -86,7 +87,6 @@ func (c *Commands) Print() {
 			{Align: simpletable.AlignCenter, Text: "Command"},
 			{Align: simpletable.AlignCenter, Text: "Category"},
 			{Align: simpletable.AlignCenter, Text: "Description"},
-			{Align: simpletable.AlignRight, Text: "CreatedAt"},
 		},
 	}
 
@@ -97,13 +97,12 @@ func (c *Commands) Print() {
 		instruction := cyan(item.Instruction)
 		category := magenta(item.Category)
 		description := yellow(item.Description)
-		createdAt := green(item.CreatedAt.Format(time.RFC822))
+
 		cells = append(cells, *&[]*simpletable.Cell{
 			{Text: fmt.Sprintf("%d", idx)},
 			{Text: instruction},
 			{Text: category},
 			{Text: description},
-			{Text: createdAt},
 		})
 	}
 
@@ -112,4 +111,47 @@ func (c *Commands) Print() {
 	table.SetStyle(simpletable.StyleUnicode)
 
 	table.Println()
+}
+
+func (c *Commands) Search(kind string, value string) {
+
+	jq := gojsonq.New().File("data/commands.json").Select("Instruction", "Category", "Description", "CreatedAt").Where(kind, "contains", value)
+
+	table := simpletable.New()
+
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "Command"},
+			{Align: simpletable.AlignCenter, Text: "Category"},
+			{Align: simpletable.AlignCenter, Text: "Description"},
+			{Align: simpletable.AlignRight, Text: "CreatedAt"},
+		},
+	}
+
+	var cells [][]*simpletable.Cell
+
+	if x, ok := jq.Get().([]interface{}); ok {
+		for i, e := range x {
+			item := e.(map[string]interface{})
+
+			i++
+			instruction := cyan(fmt.Sprintf("%v", item["Instruction"]))
+			category := magenta(fmt.Sprintf("%v", item["Category"]))
+			description := yellow(fmt.Sprintf("%v", item["Description"]))
+			createdAt := green(fmt.Sprintf("%v", item["CreatedAt"]))
+			cells = append(cells, *&[]*simpletable.Cell{
+				{Text: fmt.Sprintf("%d", i)},
+				{Text: instruction},
+				{Text: category},
+				{Text: description},
+				{Text: createdAt},
+			})
+		}
+		table.Body = &simpletable.Body{Cells: cells}
+
+		table.SetStyle(simpletable.StyleUnicode)
+
+		table.Println()
+	}
 }
