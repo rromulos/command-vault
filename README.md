@@ -1,6 +1,8 @@
 # About Command Vault
 Command Vault is a small CLI application whose main purpose is to allow the user to save commands in a list. The user can also delete a command, list all commands, search by a command, search by category, or even search by a description.
 
+Below you can check all the commands available so far.
+
 ## How to use
 
 | Command           | Description                                               |
@@ -19,6 +21,6 @@ Command Vault is a small CLI application whose main purpose is to allow the user
 
 ## Improvements
 
-- Add the ability to copy a command to the clipboard
-- Add the ability for the user search by ID
+- Add the ability to copy a command to the clipboard.
+- Add the ability for the user search by ID.
 
