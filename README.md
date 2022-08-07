@@ -27,3 +27,6 @@ Below you can check all the commands available so far.
 
 ## Notes
 - So far the executable is only available for Unix systems, feel free to build for Windows.
+
+## Current Version
+- 1.1.2
