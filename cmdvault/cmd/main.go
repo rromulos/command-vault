@@ -27,13 +27,15 @@ const (
 	cyan    = "\033[0;96m%s\033[0m"
 	magenta = "\033[0;95m%s\033[0m"
 	yellow  = "\033[0;93m%s\033[0m"
-	green   = "\033[1;92m%s\033[0m"
+	green   = "\033[0;92m%s\033[0m"
+	gray    = "\033[0;90m%s\033[0m"
 )
 
 func main() {
 	add := flag.Bool("a", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
 	list := flag.Bool("l", false, "list all commands")
+	version := flag.Bool("v", false, "Shows the application version")
 	searchCommand := flag.Bool("scom", false, "search for command")
 	searchCategory := flag.Bool("scat", false, "search for category")
 	searchDescription := flag.Bool("sdes", false, "search for Description")
@@ -57,6 +59,8 @@ func main() {
 	case *list:
 		cleanTerminal()
 		commands.Print()
+	case *version:
+		getVersion()
 	case *searchCommand:
 		cleanTerminal()
 		doSearch("Instruction")
@@ -193,4 +197,11 @@ func runCmd(name string, arg ...string) {
 	cmd := exec.Command(name, arg...)
 	cmd.Stdout = os.Stdout
 	cmd.Run()
+}
+
+func getVersion() {
+	fmt.Printf(yellow, "Version => 1.1.2 \n")
+	fmt.Printf(cyan, "Author  => Rômulo Santos \n")
+	fmt.Printf(gray, "E-mail  => @rromulosp@gmail.com \n")
+	fmt.Printf(gray, "Github  => @rromulos \n")
 }
