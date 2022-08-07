@@ -14,7 +14,8 @@ Is a small CLI application whose main purpose is to allow the user to save comma
 
 **Note**: You can search without enclosing the values in double quotes, but the value cannot represent a composite value
 ## Screenshots
-![image](https://user-images.githubusercontent.com/27534241/183266869-608e0225-e1c5-49b9-a756-e65589fc8ae1.png)
+![image](https://user-images.githubusercontent.com/27534241/183315162-e8027a6c-e7f8-43b0-bffb-5c51d53b0d8e.png)
+
 
 ## Improvements
 
