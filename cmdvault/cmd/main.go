@@ -20,6 +20,9 @@ func main() {
 	add := flag.Bool("a", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
 	list := flag.Bool("l", false, "list all commands")
+	searchCommand := flag.Bool("scmd", false, "search for a command")
+	searchCategory := flag.Bool("scat", false, "search for category")
+	searchDescription := flag.Bool("sdes", false, "search for Description")
 	flag.Parse()
 
 	// Initializing the struct
@@ -59,6 +62,30 @@ func main() {
 		}
 	case *list:
 		commands.Print()
+	case *searchCommand:
+		cmd, err := getInput(os.Stdin, flag.Args()...)
+		cmd = strings.TrimPrefix(cmd, "=")
+		if err != nil {
+			fmt.Println(os.Stderr, err.Error())
+			os.Exit(1)
+		}
+		commands.Search("Instruction", cmd)
+	case *searchCategory:
+		cmd, err := getInput(os.Stdin, flag.Args()...)
+		cmd = strings.TrimPrefix(cmd, "=")
+		if err != nil {
+			fmt.Println(os.Stderr, err.Error())
+			os.Exit(1)
+		}
+		commands.Search("Category", cmd)
+	case *searchDescription:
+		cmd, err := getInput(os.Stdin, flag.Args()...)
+		cmd = strings.TrimPrefix(cmd, "=")
+		if err != nil {
+			fmt.Println(os.Stderr, err.Error())
+			os.Exit(1)
+		}
+		commands.Search("Description", cmd)
 	default:
 		fmt.Println(os.Stdout, "invalid command")
 		os.Exit(1)
