@@ -32,12 +32,42 @@ OR
 ### Removing a command
 
 - make cv/d id=1
-- 
+
 OR
 
 - ./main -d=1
 
 **Note**: *The ID shown in the table must be used as an index for removing the command*
+
+### Search for command
+
+- make cv/scom args=docker OR make cv/scom args="docker run"
+
+OR
+
+- ./main -scom docker OR ./main -scom "docker run"
+
+**Note**: *To search by compound word, use double quotes*
+
+### Search for category
+
+- make cv/scat args=Linux OR make cv/scat args="Linux Mint"
+
+OR
+
+- ./main -scat Linux OR ./main -scat "Linux Mint"
+
+**Note**: *To search by compound word, use double quotes*
+
+### Search for description
+
+- make cv/sdes args=running OR make cv/sdes args="running container"
+
+OR
+
+- ./main -sdes running OR ./main -sdes "running container"
+
+**Note**: *To search by compound word, use double quotes*
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/27534241/183266869-608e0225-e1c5-49b9-a756-e65589fc8ae1.png)
