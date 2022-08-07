@@ -63,29 +63,11 @@ func main() {
 	case *list:
 		commands.Print()
 	case *searchCommand:
-		cmd, err := getInput(os.Stdin, flag.Args()...)
-		cmd = strings.TrimPrefix(cmd, "=")
-		if err != nil {
-			fmt.Println(os.Stderr, err.Error())
-			os.Exit(1)
-		}
-		commands.Search("Instruction", cmd)
+		doSearch("Instruction")
 	case *searchCategory:
-		cmd, err := getInput(os.Stdin, flag.Args()...)
-		cmd = strings.TrimPrefix(cmd, "=")
-		if err != nil {
-			fmt.Println(os.Stderr, err.Error())
-			os.Exit(1)
-		}
-		commands.Search("Category", cmd)
+		doSearch("Category")
 	case *searchDescription:
-		cmd, err := getInput(os.Stdin, flag.Args()...)
-		cmd = strings.TrimPrefix(cmd, "=")
-		if err != nil {
-			fmt.Println(os.Stderr, err.Error())
-			os.Exit(1)
-		}
-		commands.Search("Description", cmd)
+		doSearch("Description")
 	default:
 		fmt.Println(os.Stdout, "invalid command")
 		os.Exit(1)
@@ -112,4 +94,15 @@ func getInput(r io.Reader, args ...string) (string, error) {
 
 	return text, nil
 
+}
+
+func doSearch(searchBy string) {
+	commands := &command.Commands{}
+	cmd, err := getInput(os.Stdin, flag.Args()...)
+	cmd = strings.TrimPrefix(cmd, "=")
+	if err != nil {
+		fmt.Println(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+	commands.Search(searchBy, cmd)
 }
