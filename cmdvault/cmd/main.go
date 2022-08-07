@@ -20,7 +20,7 @@ func main() {
 	add := flag.Bool("a", false, "add a new command")
 	del := flag.Int("d", 0, "delete a command")
 	list := flag.Bool("l", false, "list all commands")
-	searchCommand := flag.Bool("scom", false, "search for a command")
+	searchCommand := flag.Bool("scom", false, "search for command")
 	searchCategory := flag.Bool("scat", false, "search for category")
 	searchDescription := flag.Bool("sdes", false, "search for Description")
 	flag.Parse()
@@ -34,30 +34,9 @@ func main() {
 
 	switch {
 	case *add:
-		cmd, err := getInput(os.Stdin, flag.Args()...)
-		cmd = strings.TrimPrefix(cmd, "=")
-		args := strings.Split(cmd, "|-|")
-		if len(args) < 3 {
-			fmt.Println("Error: missing arguments")
-			os.Exit(1)
-		}
-		commands.Add(args[0], args[1], args[2])
-		err = commands.Save(cmdFile)
-		if err != nil {
-			fmt.Println(os.Stderr, err.Error())
-			os.Exit(1)
-		}
+		readInstructionFromTerminal(commands)
 	case *del > 0:
-		err := commands.Delete(*del)
-		if err != nil {
-			fmt.Println(os.Stderr, err.Error())
-			os.Exit(1)
-		}
-		err = commands.Save(cmdFile)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err.Error())
-			os.Exit(1)
-		}
+		deleteInstruction(commands, *del)
 	case *list:
 		commands.Print()
 	case *searchCommand:
@@ -98,9 +77,47 @@ func doSearch(searchBy string) {
 	commands := &command.Commands{}
 	cmd, err := getInput(os.Stdin, flag.Args()...)
 	cmd = strings.TrimPrefix(cmd, "=")
+
 	if err != nil {
 		fmt.Println(os.Stderr, err.Error())
 		os.Exit(1)
 	}
+
 	commands.Search(searchBy, cmd)
+}
+
+func readInstructionFromTerminal(cmd *command.Commands) {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("[Enter the command] => ")
+	scanner.Scan()
+	iInstruction := scanner.Text()
+	fmt.Print("[Enter the category] => ")
+	scanner.Scan()
+	iCategory := scanner.Text()
+	fmt.Print("[Enter the description] => ")
+	scanner.Scan()
+	iDescription := scanner.Text()
+	cmd.Add(iInstruction, iCategory, iDescription)
+	err := cmd.Save(cmdFile)
+
+	if err != nil {
+		fmt.Println(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+}
+
+func deleteInstruction(cmd *command.Commands, del int) {
+	err := cmd.Delete(del)
+
+	if err != nil {
+		fmt.Println(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+
+	err = cmd.Save(cmdFile)
+
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
+	}
 }
