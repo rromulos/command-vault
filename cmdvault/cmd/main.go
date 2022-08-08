@@ -207,7 +207,7 @@ func runCmd(name string, arg ...string) {
 }
 
 func getVersion() {
-	fmt.Printf(Underlined, "Version => 1.1.2 \n")
+	fmt.Printf(Underlined, "Version => 1.1.3 \n")
 	fmt.Printf(cyan, "Author  => Rômulo Santos \n")
 	fmt.Printf(gray, "E-mail  => @rromulosp@gmail.com \n")
 	fmt.Printf(gray, "Github  => @rromulos \n")
