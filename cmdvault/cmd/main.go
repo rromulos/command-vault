@@ -29,6 +29,9 @@ const (
 	yellow  = "\033[0;93m%s\033[0m"
 	green   = "\033[0;92m%s\033[0m"
 	gray    = "\033[0;90m%s\033[0m"
+
+	Underlined = "\033[4m%s\033[0m"
+	Blink      = "\033[5m%s\033[0m"
 )
 
 func main() {
@@ -200,7 +203,7 @@ func runCmd(name string, arg ...string) {
 }
 
 func getVersion() {
-	fmt.Printf(yellow, "Version => 1.1.2 \n")
+	fmt.Printf(Underlined, "Version => 1.1.2 \n")
 	fmt.Printf(cyan, "Author  => Rômulo Santos \n")
 	fmt.Printf(gray, "E-mail  => @rromulosp@gmail.com \n")
 	fmt.Printf(gray, "Github  => @rromulos \n")
