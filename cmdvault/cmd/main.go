@@ -129,11 +129,11 @@ func readInstructionFromTerminal(cmd *command.Commands) {
 	fmt.Printf(yellow, "[Enter the description]* => ")
 	scanner.Scan()
 	iDescription := scanner.Text()
-	validatioResult := doValidation(iInstruction, iCategory, iDescription)
+	validationResult := doValidation(iInstruction, iCategory, iDescription)
 
 	idSequence := cmd.GenerateSequence()
 
-	if validatioResult == true {
+	if validationResult == true {
 		cmd.Add(idSequence, iInstruction, iCategory, iDescription)
 		err := cmd.Save(cmdFile)
 
