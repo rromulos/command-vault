@@ -32,6 +32,10 @@ const (
 
 	Underlined = "\033[4m%s\033[0m"
 	Blink      = "\033[5m%s\033[0m"
+	Bold       = "\033[1m%s\033[0m"
+	Dim        = "\033[2m%s\033[0m"
+	Reverse    = "\033[7m%s\033[0m"
+	Hidden     = "\033[8m%s\033[0m"
 )
 
 func main() {
