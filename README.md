@@ -15,7 +15,7 @@ Below you can check all the commands available so far.
 | ./cv -sdes "value"     | Search by description |
 | ./cv -v     | Shows the version |
 
-**Note**: You can search without enclosing the values in double quotes, but the value cannot represent a composite value.
+**Note**: You can search without enclosing the values in double quotes, but the value can't represent a composite value.
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/27534241/183315162-e8027a6c-e7f8-43b0-bffb-5c51d53b0d8e.png)
 
