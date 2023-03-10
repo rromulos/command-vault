@@ -25,7 +25,8 @@ Below you can check all the commands available so far.
 
 ## Improvements
 
-- Add the ability to pagination
+- Add the ability to pagination.
+- Add ability to sync commands file (database) with gdrive.
 
 ## Notes
 - So far the executable is only available for Unix systems, feel free to build for Windows.
