@@ -46,6 +46,8 @@ func main() {
 	searchCommand := flag.Bool("scom", false, "search for command")
 	searchCategory := flag.Bool("scat", false, "search for category")
 	searchDescription := flag.Bool("sdes", false, "search for Description")
+	searchID := flag.Bool("sid", false, "Search by ID")
+	copyToClipboard := flag.Int("cp", 0, "Copy command to clipboard")
 	flag.Parse()
 
 	commands := &command.Commands{}
@@ -60,6 +62,7 @@ func main() {
 		cleanTerminal()
 		readInstructionFromTerminal(commands)
 	case *del > 0:
+		fmt.Println(*del)
 		deleteInstruction(commands, *del)
 		cleanTerminal()
 		commands.Print()
@@ -77,6 +80,11 @@ func main() {
 	case *searchDescription:
 		cleanTerminal()
 		doSearch("Description")
+	case *searchID:
+		cleanTerminal()
+		doSearch("Id")
+	case *copyToClipboard > 0:
+		commands.CopyToClipboard(*copyToClipboard)
 	default:
 		fmt.Println(os.Stdout, "invalid command")
 		os.Exit(1)
@@ -207,7 +215,7 @@ func runCmd(name string, arg ...string) {
 }
 
 func getVersion() {
-	fmt.Printf(Underlined, "Version => 1.1.3 \n")
+	fmt.Printf(Underlined, "Version => 1.2 \n")
 	fmt.Printf(cyan, "Author  => Rômulo Santos \n")
 	fmt.Printf(gray, "E-mail  => @rromulosp@gmail.com \n")
 	fmt.Printf(gray, "Github  => @rromulos \n")
